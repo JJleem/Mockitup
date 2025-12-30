@@ -9,7 +9,6 @@ import {
 import { highlightSyntax } from "./services/highlighter";
 import { useFieldTree } from "./hooks/useFieldTree";
 import { useQuotes } from "./hooks/useQuotes";
-import LoadingSpinner from "./components/LoadingSpinner";
 
 export default function App() {
   // Hooks
@@ -81,7 +80,7 @@ export default function App() {
         <div className="w-full md:w-5/12 flex flex-col gap-4">
           <header className="flex items-center gap-2 ">
             <img
-              src="/mockitup.png"
+              src={`${import.meta.env.BASE_URL}mockitup.png`}
               alt="mockitup logo"
               className="object-contain w-13 h-13 absolute"
             />
@@ -179,7 +178,7 @@ export default function App() {
       </div>
       <footer className="w-full py-6 mt-10 border-t border-gray-800 text-center flex">
         <img
-          src="/mockitup.png"
+          src={`${import.meta.env.BASE_URL}mockitup.png`}
           alt="mockitup logo"
           className="object-contain w-18 h-18 "
         />
@@ -234,7 +233,11 @@ export default function App() {
             >
               Built by{" "}
               <span>
-                <img src="/molt.png" alt="" className="w-5" />
+                <img
+                  src={`${import.meta.env.BASE_URL}molt.png`}
+                  alt=""
+                  className="w-5"
+                />
               </span>{" "}
               <span className="text-blue-400">Molt</span>
             </a>

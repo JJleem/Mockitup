@@ -5,11 +5,7 @@ type SpinnerProps = {
   iconHeight?: number;
 };
 
-const LoadingSpinner = ({
-  title,
-  iconWidth = 12, // 기본값 설정
-  iconHeight = 12,
-}: SpinnerProps) => {
+const LoadingSpinner = ({ title }: SpinnerProps) => {
   const isPurple = title === "purple";
   const gradientId = isPurple
     ? "spinner-gradient-purple"
