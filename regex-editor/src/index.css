@@ -1,0 +1,149 @@
+@import "tailwindcss";
+
+/* =========================================
+   1. Simple Spinner (단순 회전 링)
+   ========================================= */
+
+.simple-spinner-wrapper {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 회전하는 링 */
+.simple-spinner-wrapper .spinner-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+
+  /* 색상 구현: 노랑에서 빨강으로 */
+  background: conic-gradient(
+    from 0deg,
+    transparent 15%,
+    #e4e3de 30%,
+    #1da9fa 100%
+  );
+
+  /* 도넛 모양 만들기 (가운데 구멍 뚫기) */
+  -webkit-mask: radial-gradient(
+    farthest-side,
+    transparent calc(100% - 4px),
+    #fff calc(100% - 4px + 1px)
+  );
+  mask: radial-gradient(
+    farthest-side,
+    transparent calc(100% - 4px),
+    #fff calc(100% - 4px + 1px)
+  );
+
+  animation: spinSimple 1s linear infinite;
+}
+
+/* 가운데 고정 아이콘 */
+.simple-spinner-wrapper .spinner-logo {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  z-index: 5;
+  object-fit: contain;
+}
+
+@keyframes spinSimple {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================
+   2. Elastic Spinner (늘어났다 줄어드는 SVG)
+   ========================================= */
+
+.elastic-spinner-wrapper {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* SVG 컨테이너: 전체적으로 천천히 회전 */
+.elastic-spinner-wrapper .spinner-svg {
+  width: 100%;
+  height: 100%;
+  animation: container-rotate 2s linear infinite;
+  transform-origin: center center;
+}
+
+/* 그라데이션 적용을 위한 연결 */
+.elastic-spinner-wrapper .spinner-circle-purple {
+  stroke: url(#spinner-gradient-purple);
+}
+.elastic-spinner-wrapper .spinner-grad {
+  stroke: url(#spinner-gradient);
+}
+
+/* 내부의 선(Circle) 스타일 */
+.elastic-spinner-wrapper .spinner-circle {
+  fill: none;
+  stroke-width: 4;
+  stroke-linecap: round;
+
+  /* 핵심: 늘어났다 줄어드는 효과 */
+  stroke-dasharray: 1, 200;
+  stroke-dashoffset: 0;
+
+  animation: dash 1.5s ease-in-out infinite;
+}
+
+/* 가운데 아이콘 */
+.elastic-spinner-wrapper .center-icon {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  z-index: 5;
+  animation: icon-spin-pause 4s ease-in-out infinite;
+  transform-origin: center center;
+}
+
+@keyframes container-rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -35px;
+  }
+  100% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -124px;
+  }
+}
+
+@keyframes icon-spin-pause {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  25% {
+    transform: rotate(360deg) scale(1.05);
+  }
+  30% {
+    transform: rotate(360deg) scale(1);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+}
