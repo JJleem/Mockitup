@@ -15,11 +15,11 @@ const FieldRow = memo(
     return (
       <div className="flex flex-col animate-fadeIn">
         <div
-          className="flex gap-2 items-center mb-2"
+          className="flex flex-col sm:flex-row gap-2 sm:items-center mb-2 pr-2"
           style={{ paddingLeft: `${depth * 20}px` }}
         >
           {depth > 0 && (
-            <div className="w-4 h-4 border-l-2 border-b-2 border-gray-600 rounded-bl-lg mb-2" />
+            <div className="hidden sm:block w-4 h-4 border-l-2 border-b-2 border-gray-600 rounded-bl-lg mb-2 shrink-0" />
           )}
           <input
             type="text"
@@ -33,25 +33,30 @@ const FieldRow = memo(
             }}
             className={`bg-gray-800 border ${
               depth === 0 ? "border-gray-600" : "border-blue-900"
-            } rounded px-3 py-2 text-sm w-1/3 focus:border-blue-500 outline-none text-blue-300 font-mono`}
+            } rounded px-3 py-2 md:text-xs text-xs outline-none text-blue-300 font-mono focus:border-blue-500 
+            transition-all
+            w-full sm:w-auto sm:flex-2 min-w-30`}
           />
-          <select
-            value={field.type}
-            onChange={(e) => onUpdate(field.id, "type", e.target.value)}
-            className="bg-gray-800 border border-gray-600 rounded px-3 py-2 text-sm flex-1 focus:border-blue-500 outline-none text-gray-300 cursor-pointer"
-          >
-            {Object.entries(DATA_TYPES).map(([key, config]) => (
-              <option key={key} value={key}>
-                {config.label}
-              </option>
-            ))}
-          </select>
-          <button
-            onClick={() => onRemove(field.id)}
-            className="text-gray-600 hover:text-red-400 p-2 cursor-pointer"
-          >
-            ✕
-          </button>
+          <div className="flex gap-2 w-full sm:w-auto sm:flex-3 items-center min-w-30">
+            <select
+              value={field.type}
+              onChange={(e) => onUpdate(field.id, "type", e.target.value)}
+              className="bg-gray-800 border border-gray-600 rounded px-3 py-2 text-xs focus:border-blue-500 outline-none text-gray-300 cursor-pointer
+              w-full flex-1 md:text-xs"
+            >
+              {Object.entries(DATA_TYPES).map(([key, config]) => (
+                <option key={key} value={key}>
+                  {config.label}
+                </option>
+              ))}
+            </select>
+            <button
+              onClick={() => onRemove(field.id)}
+              className="text-gray-600 hover:text-red-400 p-2 cursor-pointer"
+            >
+              ✕
+            </button>
+          </div>
         </div>
         {field.type === "object" && (
           <div className="flex flex-col gap-2 relative">

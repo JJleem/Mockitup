@@ -41,6 +41,8 @@ export const generateTypescript = (fields: Field[]): string => {
     currentFields.forEach((field) => {
       const keyName = field.key.trim() || "unknown";
       const config = DATA_TYPES[field.type];
+
+      // 키 이름에 특수문자가 있거나 숫자로 시작하면 따옴표 처리
       const safeKey = /^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(keyName)
         ? keyName
         : `"${keyName}"`;
@@ -62,7 +64,13 @@ export const generateTypescript = (fields: Field[]): string => {
     return ts;
   };
 
-  return `export interface GeneratedData ${parseFields(fields)}`;
+  // 1. 단일 객체 인터페이스 생성
+  const interfaceDef = `export interface GeneratedData ${parseFields(fields)}`;
+
+  // 2. 배열 타입 추가 (GeneratedData[])
+  const arrayDef = `\n\nexport type GeneratedDataArray = GeneratedData[];`;
+
+  return interfaceDef + arrayDef;
 };
 
 // 3. SQL INSERT 문 생성

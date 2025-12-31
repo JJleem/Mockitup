@@ -50,7 +50,6 @@ const addChildRecursive = (list: Field[], parentId: string): Field[] => {
 export const useFieldTree = (initialFields: Field[]) => {
   const [fields, setFields] = useState<Field[]>(initialFields);
 
-  // ✅ 헬퍼 함수들이 외부에 있으므로 의존성 배열([])을 비워도 안전합니다.
   const handleUpdate = useCallback(
     (id: string, key: keyof Field, val: Field[keyof Field]) =>
       setFields((prev) => updateFieldRecursive(prev, id, key, val)),

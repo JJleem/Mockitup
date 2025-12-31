@@ -31,7 +31,7 @@ export default function App() {
                 type: "object",
                 children: [
                   { id: "1-1-1-1", key: "name", type: "name" },
-                  { id: "1-1-1-2", key: "gender", type: "male" },
+                  { id: "1-1-1-2", key: "email", type: "email" },
                 ],
               },
             ],
@@ -72,12 +72,33 @@ export default function App() {
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
+  const handleDownloadJson = () => {
+    if (!result) return;
 
+    try {
+      // Blob 객체 생성 (JSON 데이터)
+      const blob = new Blob([result], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+
+      // 가상의 a 태그 생성 및 클릭 트리거
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `mock_data_${new Date().getTime()}.json`; // 파일명 설정
+      document.body.appendChild(link);
+      link.click();
+
+      // 뒷정리
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("Download failed", err);
+    }
+  };
   return (
     <div className="min-h-screen bg-[#111] text-gray-200 flex flex-col md:flex-col  font-sans overflow-hidden">
-      <div className="flex min-h-screen gap-6 font-sans p-5  overflow-hidden">
+      <div className="flex  flex-col min-h-screen gap-6 font-sans p-5 xl:flex-row overflow-hidden">
         {/* 왼쪽 패널: 구조 생성기 */}
-        <div className="w-full md:w-5/12 flex flex-col gap-4">
+        <div className="w-full xl:w-5/12 flex flex-col gap-4">
           <header className="flex items-center gap-2 ">
             <img
               src={`${import.meta.env.BASE_URL}mockitup.png`}
@@ -89,8 +110,8 @@ export default function App() {
             </h1>
           </header>
           <div className="bg-[#1e1e1e] p-5 rounded-xl border border-gray-700 shadow-2xl flex flex-col gap-4 h-[calc(100vh-100px)] overflow-hidden">
-            <div className="flex justify-between items-center pb-4 border-b border-gray-700">
-              <label className="text-sm font-bold text-gray-400">
+            <div className="flex justify-between items-center pb-2 border-b border-gray-700 sm:pb-4">
+              <label className="text-xs font-bold text-gray-400 sm:text-xs">
                 Rows Count
               </label>
               <input
@@ -99,7 +120,8 @@ export default function App() {
                 max="1000"
                 value={count}
                 onChange={(e) => setCount(Number(e.target.value))}
-                className="bg-gray-900 border border-gray-600 rounded px-3 py-1 w-24 text-right text-white"
+                className="bg-gray-900 border border-gray-600 rounded text-xs py-1 px-3 w-20 text-right text-white sm:text-sm sm:w-24 
+                sm:px-3 sm:py-1"
               />
             </div>
             <div className="flex flex-col gap-2 overflow-y-auto flex-1 pr-2 custom-scrollbar">
@@ -138,7 +160,7 @@ export default function App() {
           </div>
         </div>
         {/* 오른쪽 패널: 결과 뷰어 */}
-        <div className="w-full md:w-7/12 flex flex-col gap-3">
+        <div className="w-full xl:w-7/12 flex flex-col gap-3">
           <div className="flex justify-between items-center bg-[#1e1e1e] p-2 rounded-lg border border-gray-700">
             <div className="flex gap-1">
               {(["json", "ts", "sql"] as const).map((mode) => (
@@ -155,16 +177,45 @@ export default function App() {
                 </button>
               ))}
             </div>
-            {result && (
-              <button
-                onClick={copyToClipboard}
-                className={`text-xs px-4 py-1.5 rounded-md font-bold transition-all ${
-                  copied ? "bg-green-600" : "bg-gray-700"
-                }`}
-              >
-                {copied ? "✅ Copied!" : "📋 Copy"}
-              </button>
-            )}
+            <div className="flex gap-2">
+              {/* 1. 다운로드 버튼: viewMode가 json이고 결과가 있을 때만 표시 */}
+              {viewMode === "json" && result && (
+                <button
+                  onClick={handleDownloadJson}
+                  className="text-xs px-4 py-1.5 rounded-md font-bold transition-all bg-gray-700 hover:bg-gray-600 text-gray-200 cursor-pointer flex items-center gap-1"
+                  title="Download JSON"
+                >
+                  <span>
+                    {" "}
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M7.99935 10.666L4.66602 7.33268L5.59935 6.36602L7.33268 8.09935V2.66602H8.66602V8.09935L10.3993 6.36602L11.3327 7.33268L7.99935 10.666ZM3.99935 13.3327C3.63268 13.3327 3.31879 13.2021 3.05768 12.941C2.79657 12.6799 2.66602 12.366 2.66602 11.9993V9.99935H3.99935V11.9993H11.9993V9.99935H13.3327V11.9993C13.3327 12.366 13.2021 12.6799 12.941 12.941C12.6799 13.2021 12.366 13.3327 11.9993 13.3327H3.99935Z"
+                        fill="#155dfc"
+                      ></path>
+                    </svg>
+                  </span>{" "}
+                  JSON
+                </button>
+              )}
+
+              {/* 2. 복사 버튼 */}
+              {result && (
+                <button
+                  onClick={copyToClipboard}
+                  className={`text-xs px-4 py-1.5 rounded-md font-bold transition-all ${
+                    copied ? "bg-green-600" : "bg-gray-700 hover:bg-gray-600"
+                  }`}
+                >
+                  {copied ? "✅ Copied!" : "📋 Copy"}
+                </button>
+              )}
+            </div>
           </div>
           <div className="relative w-full h-[calc(100vh-100px)] font-mono text-sm border border-gray-700 rounded-xl overflow-hidden bg-[#1e1e1e] shadow-2xl">
             <pre
@@ -176,14 +227,17 @@ export default function App() {
           </div>
         </div>
       </div>
-      <footer className="w-full py-6 mt-10 border-t border-gray-800 text-center flex">
+      <footer className="w-full py-8 mt-10 border-t border-gray-800 flex flex-col md:flex-row items-center justify-center gap-6 px-4">
+        {/* 1. 로고: 모바일에서는 작게, 데스크탑에서는 크게 */}
         <img
           src={`${import.meta.env.BASE_URL}mockitup.png`}
           alt="mockitup logo"
-          className="object-contain w-18 h-18 "
+          className="object-contain w-14 h-14 md:w-16 md:h-16"
         />
-        <div className="flex flex-col items-center justify-center gap-2 w-full -ml-18">
-          {/* 1. 프로젝트 이름 & 라이선스 */}
+
+        {/* 2. 텍스트 그룹 */}
+        <div className="flex flex-col items-center justify-center gap-2 text-center">
+          {/* 프로젝트 이름 & 라이선스 */}
           <p className="text-gray-500 text-sm">
             &copy; {new Date().getFullYear()}{" "}
             <span className="text-gray-300 font-bold">mockitup</span>. Released
@@ -199,15 +253,15 @@ export default function App() {
             .
           </p>
 
-          {/* 2. Github 링크 & 제작자 */}
-          <div className="flex gap-4 text-sm text-gray-500">
+          {/* Github 링크 & 제작자 */}
+          {/* flex-wrap: 화면이 아주 좁을 때 줄바꿈 허용 */}
+          <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-500">
             <a
               href="https://github.com/jjleem/mockitup"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-1 hover:text-white transition-colors"
             >
-              {/* Github SVG Icon */}
               <svg
                 className="w-4 h-4"
                 fill="currentColor"
@@ -223,7 +277,7 @@ export default function App() {
               GitHub Repository
             </a>
 
-            <span>|</span>
+            <span className="hidden sm:inline">|</span>
 
             <a
               href="https://github.com/jjleem"
@@ -235,8 +289,8 @@ export default function App() {
               <span>
                 <img
                   src={`${import.meta.env.BASE_URL}molt.png`}
-                  alt=""
-                  className="w-5"
+                  alt="Molt Logo"
+                  className="w-5 h-5 object-contain"
                 />
               </span>{" "}
               <span className="text-blue-400">Molt</span>

@@ -41,15 +41,16 @@ export const highlightSyntax = (code: string, mode: ViewMode): string => {
   if (mode === "ts") {
     let html = escapeHtml(code);
     html = html.replace(
-      /\b(export|default|return|interface|type)\b/g,
+      /\b(export|default|return|interface)\b/g,
       '<span class="text-[#c586c0] font-bold">$1</span>'
     );
     html = html.replace(
-      /\b(interface)\b/g,
+      /\b(interface|type)\b/g,
       '<span class="text-[#5787f0] font-bold">$1</span>'
     );
+    html = html.replace(/([[]])/g, '<span class="text-[#ffd700]">$1</span>');
     html = html.replace(
-      /\b(string|number|boolean|any|void|null|undefined|RegisterUserData|GeneratedData)\b/g,
+      /\b(string|number|boolean|any|void|null|undefined|RegisterUserData|GeneratedData|GeneratedDataArray)\b/g,
       '<span class="text-[#4ec9b0]">$1</span>'
     );
     html = html.replace(

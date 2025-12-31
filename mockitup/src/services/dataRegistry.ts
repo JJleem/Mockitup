@@ -29,14 +29,12 @@ export const DATA_TYPES: Record<DataTypeKey, DataTypeConfig> = {
   email: {
     label: "📧 이메일 (Smart)",
     tsType: "string",
-    // 🔥 [수정] 매개변수를 옵셔널(?)로 변경하고 타입을 구체화
     generate: (item?: Record<string, unknown>, fields?: Field[]) => {
-      // fields가 undefined일 수 있으므로 ?. (Optional Chaining) 사용
       const nameField = fields?.find((f) => f.type === "name");
 
       if (nameField && item && item[nameField.key]) {
         const korName = item[nameField.key];
-        // korName이 문자열인지 확실하지 않다면 안전하게 처리
+
         if (typeof korName === "string") {
           const korSurname = korName.substring(0, 1);
           const korFirstName = korName.substring(1);
