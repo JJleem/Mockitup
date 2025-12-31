@@ -182,24 +182,24 @@ export default function App() {
               {viewMode === "json" && result && (
                 <button
                   onClick={handleDownloadJson}
-                  className="text-xs px-4 py-1.5 rounded-md font-bold transition-all bg-gray-700 hover:bg-gray-600 text-gray-200 cursor-pointer flex items-center gap-1"
+                  className="text-[10px] sm:text-xs px-2 sm:px-2 py-1.5 rounded-md font-bold transition-all bg-gray-700 hover:bg-gray-600 text-gray-200 cursor-pointer flex items-center gap-1"
                   title="Download JSON"
                 >
                   <span>
-                    {" "}
                     <svg
                       width="16"
                       height="16"
                       viewBox="0 0 16 16"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
+                      className="w-2.5 sm:w-4"
                     >
                       <path
                         d="M7.99935 10.666L4.66602 7.33268L5.59935 6.36602L7.33268 8.09935V2.66602H8.66602V8.09935L10.3993 6.36602L11.3327 7.33268L7.99935 10.666ZM3.99935 13.3327C3.63268 13.3327 3.31879 13.2021 3.05768 12.941C2.79657 12.6799 2.66602 12.366 2.66602 11.9993V9.99935H3.99935V11.9993H11.9993V9.99935H13.3327V11.9993C13.3327 12.366 13.2021 12.6799 12.941 12.941C12.6799 13.2021 12.366 13.3327 11.9993 13.3327H3.99935Z"
                         fill="#155dfc"
                       ></path>
                     </svg>
-                  </span>{" "}
+                  </span>
                   JSON
                 </button>
               )}
@@ -208,7 +208,7 @@ export default function App() {
               {result && (
                 <button
                   onClick={copyToClipboard}
-                  className={`text-xs px-4 py-1.5 rounded-md font-bold transition-all ${
+                  className={`text-[10px] sm:text-xs  px-2 sm:px-2 py-1.5 rounded-md font-bold transition-all ${
                     copied ? "bg-green-600" : "bg-gray-700 hover:bg-gray-600"
                   }`}
                 >
